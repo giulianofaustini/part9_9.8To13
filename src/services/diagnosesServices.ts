@@ -1,4 +1,3 @@
-
 import data from '../data/DiagnosisData';
 import { Diagnosis } from '../../types';
 

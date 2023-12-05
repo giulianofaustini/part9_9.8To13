@@ -2,9 +2,7 @@
 
 import axios from "axios";
 import { Patient, PatientFormValues } from "../types";
-import cors from 'cors';
 
-cors({ origin: true });
 
 import { apiBaseUrl } from "../constants";
 

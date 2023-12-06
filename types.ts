@@ -15,3 +15,5 @@ occupation: string
 
 
 export type NonSensitivePatient = Omit<Patient, 'ssn'>;
+
+export type NewPatientEntry = Omit<Patient, 'id'>;

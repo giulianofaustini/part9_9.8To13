@@ -58,7 +58,7 @@ if('name' in object && 'dateOfBirth' in object && 'ssn' in object && 'gender' in
         name: parseName(object.name),
         dateOfBirth: parseDateOfBirth(object.dateOfBirth),
         ssn: parseSsn(object.ssn),
-        gender: parseGender(object.gender),
+        gender: parseGender(object.gender as string),
         occupation: parseOccupation(object.occupation)
     };
 

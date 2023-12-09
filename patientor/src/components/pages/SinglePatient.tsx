@@ -28,7 +28,11 @@ export const SinglePatient = ({ patients }: Props) => {
             <h2> {entry.type} </h2>
             <h3> Date: {entry.date} </h3>
             <h3> Description: { entry.description} </h3>
-            <h3> Diagnosis code:  { entry.diagnosisCodes} </h3>
+            <h3> Diagnosis code:
+              { entry.diagnosisCodes && entry.diagnosisCodes.map((code) => (
+                <li key={code}> {code} </li>
+              ))}
+            </h3>
             <h3> Specialist: { entry.specialist} </h3>
             <h3> Health Check Rating: {entry.healthCheckRating}</h3>
           </div>
@@ -39,7 +43,11 @@ export const SinglePatient = ({ patients }: Props) => {
             <h2> {entry.type} </h2>
             <h3> Date: {entry.date} </h3>
             <h3> Description: { entry.description} </h3>
-            <h3> Diagnosis code:  { entry.diagnosisCodes} </h3>
+            <h3> Diagnosis code:
+              { entry.diagnosisCodes && entry.diagnosisCodes.map((code) => (
+                <li key={code}> {code} </li>
+              ))}
+            </h3>
             <h3> Specialist: { entry.specialist} </h3>
             <h3>Discharge Date: {entry.discharge.date}</h3>
             <h3>Discharge Criteria: {entry.discharge.criteria}</h3>
@@ -51,7 +59,11 @@ export const SinglePatient = ({ patients }: Props) => {
             <h2> {entry.type} </h2>
             <h3> Date: {entry.date} </h3>
             <h3> Description: { entry.description} </h3>
-            <h3> Diagnosis code:  { entry.diagnosisCodes} </h3>
+            <h3> Diagnosis code:
+              { entry.diagnosisCodes && entry.diagnosisCodes.map((code) => (
+                <li key={code}> {code} </li>
+              ))}
+            </h3>
             <h3> Specialist: { entry.specialist} </h3>
             <h3>Employer: {entry.employerName}</h3>
             {entry.sickLeave && (

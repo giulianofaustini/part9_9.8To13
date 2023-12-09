@@ -25,7 +25,7 @@ entries: Entry[]
 }
 
 
-export type NonSensitivePatient = Omit<Patient, 'entries'>;
+export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 
 export type NewPatientEntry = Omit<Patient, 'id'>;
 

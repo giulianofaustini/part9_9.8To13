@@ -10,6 +10,10 @@ import patientService from "./services/patients";
 import PatientListPage from "./components/PatientListPage";
 import { SinglePatient } from "./components/pages/SinglePatient";
 
+
+
+
+
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
 

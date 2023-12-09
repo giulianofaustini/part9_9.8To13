@@ -47,6 +47,7 @@ export const parseOccupation = (occupation: unknown): string => {
 };
 
 
+
 export const toNewPatientEntry = ( object: unknown): NewPatientEntry => {
     if ( !object || typeof object !== 'object' ) {
         throw new Error('Incorrect or missing data');

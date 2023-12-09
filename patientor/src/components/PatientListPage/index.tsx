@@ -10,8 +10,11 @@ import HealthRatingBar from "../HealthRatingBar";
 
 import patientService from "../../services/patients";
 
+
+
 interface Props {
   patients : Patient[]
+
   setPatients: React.Dispatch<React.SetStateAction<Patient[]>>
 }
 

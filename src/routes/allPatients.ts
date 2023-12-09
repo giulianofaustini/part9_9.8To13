@@ -2,12 +2,23 @@
 import express from "express";
 import patientsServices from "../services/patientsServices";
 import { toNewPatientEntry } from "../../utils";
+import { Patient } from "../../types";
 
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
     res.send(patientsServices.getNonSensitivePatients());
+});
+
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  try {
+    const patient: Patient = patientsServices.getPatientById(id);
+    res.send(patient);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 

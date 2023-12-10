@@ -12,6 +12,13 @@ export enum Gender {
 }
 
 
+export enum HealthCheckRating {
+  "Healthy" = 0,
+  "LowRisk" = 1,
+  "HighRisk" = 2,
+  "CriticalRisk" = 3
+}
+
 interface BaseEntry {
     id: string;
     description: string;
@@ -20,19 +27,11 @@ interface BaseEntry {
     diagnosisCodes?: Array<Diagnosis['code']>;
   }
 
-  export enum HealthCheckRating {
-    "Healthy" = 0,
-    "LowRisk" = 1,
-    "HighRisk" = 2,
-    "CriticalRisk" = 3
-  }
   
   interface HealthCheckEntry extends BaseEntry {
     type: "HealthCheck";
     healthCheckRating: HealthCheckRating;
   }
-
-
 
     interface OccupationalHealthcareEntry extends BaseEntry {
         type: "OccupationalHealthcare";

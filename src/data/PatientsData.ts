@@ -67,7 +67,7 @@ const patientsData: Patient[] = [
     name: 'Dana Scully',
     dateOfBirth: '1974-01-05',
     ssn: '050174-432N',
-    gender: "male" as Gender,
+    gender: "female" as Gender,
     occupation: 'Forensic Pathologist',
     entries: [
       {

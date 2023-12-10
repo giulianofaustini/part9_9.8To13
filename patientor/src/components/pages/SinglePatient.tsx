@@ -4,15 +4,26 @@ import { HealthCheckEntry, HospitalEntry, OccupationalHealthcareEntry } from "..
 import { Patient } from "../../types";
 import { Diagnosis } from "../../types";
 import diagnosisService from '../../services/diagnosis';
+import { HealthCheckEntryDisplay } from "../AddPatientModal/HealthCheckEntryDisplay";
+import { HospitalEntryDisplay } from "../AddPatientModal/HospitalEntryDisplay";
+import { OccupationalEntryDisplay } from "../AddPatientModal/OccupationalEntryDisplay";
 
 interface Props {
   patients: Patient[];
   setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
 }
+
+
+
 export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
+
+ 
+  
+
   const { id } = useParams<{ id: string }>();
   const [diagnosis, setDiagnosis] = useState<Diagnosis[]>([]);
   const [patient, setPatient] = useState<Patient | undefined>();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,73 +51,15 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
     switch (entry.type) {
       case "HealthCheck":
         return (
-          <div>
-            <h2>{entry.type}</h2>
-            <h3>Date: {entry.date}</h3>
-            <h3>Description: {entry.description}</h3>
-            <h3>Diagnosis code:
-              {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 ? (
-                <ul>
-                  {entry.diagnosisCodes.map((code) => (
-                    <li key={code}>{getDiagnosisInfo(code)}</li>
-                  ))}
-                </ul>
-              ) : (
-                <span>No diagnosis codes</span>
-              )}
-            </h3>
-            <h3>Specialist: {entry.specialist}</h3>
-            <h3>Health Check Rating: {entry.healthCheckRating}</h3>
-          </div>
+         <HealthCheckEntryDisplay entry={entry} getDiagnosisInfo={getDiagnosisInfo} />
         );
       case "Hospital":
         return (
-          <div>
-            <h2>{entry.type}</h2>
-            <h3>Date: {entry.date}</h3>
-            <h3>Description: {entry.description}</h3>
-            <h3>Diagnosis code:
-              {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 ? (
-                <ul>
-                  {entry.diagnosisCodes.map((code) => (
-                    <li key={code}>{getDiagnosisInfo(code)}</li>
-                  ))}
-                </ul>
-              ) : (
-                <span>No diagnosis codes</span>
-              )}
-            </h3>
-            <h3>Specialist: {entry.specialist}</h3>
-            <h3>Discharge Date: {entry.discharge.date}</h3>
-            <h3>Discharge Criteria: {entry.discharge.criteria}</h3>
-          </div>
+         <HospitalEntryDisplay entry={entry} getDiagnosisInfo={getDiagnosisInfo} />
         );
       case "OccupationalHealthcare":
         return (
-          <div>
-            <h2>{entry.type}</h2>
-            <h3>Date: {entry.date}</h3>
-            <h3>Description: {entry.description}</h3>
-            <h3>Diagnosis code:
-              {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 ? (
-                <ul>
-                  {entry.diagnosisCodes.map((code) => (
-                    <li key={code}>{getDiagnosisInfo(code)}</li>
-                  ))}
-                </ul>
-              ) : (
-                <span>No diagnosis codes</span>
-              )}
-            </h3>
-            <h3>Specialist: {entry.specialist}</h3>
-            <h3>Employer: {entry.employerName}</h3>
-            {entry.sickLeave && (
-              <div>
-                <h3>Sick Leave Start Date: {entry.sickLeave.startDate}</h3>
-                <h3>Sick Leave End Date: {entry.sickLeave.endDate}</h3>
-              </div>
-            )}
-          </div>
+         <OccupationalEntryDisplay entry={entry} getDiagnosisInfo={getDiagnosisInfo} />
         );
       default:
         return null;

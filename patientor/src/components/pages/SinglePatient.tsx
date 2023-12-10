@@ -42,6 +42,12 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
   const [dischargeDate, setDischargeDate] = useState<string>("");
   const [dischargeCriteria, setDischargeCriteria] = useState<string>("");
 
+// occupational
+
+const [isOccupationalOpen, setIsOccupationalOpen] =  useState<boolean>(false);
+const [employerName, setEmployerName] = useState<string>("");
+const [sickLeaveStartDate, setSickLeaveStartDate] = useState<string>("");
+const [sickLeaveEndDate, setSickLeaveEndDate] = useState<string>("");
 
 
   useEffect(() => {
@@ -95,6 +101,39 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
       default:
         return null;
     }
+  };
+
+  const handleOccupationalCheckSubmit = async () => {
+    const newOccupationalHealthcareEntry = {
+      type: "OccupationalHealthcare",
+      description,
+      date,
+      specialist,
+      diagnosisCodes,
+      employerName,
+      sickLeave: {
+        startDate: sickLeaveStartDate,
+        endDate: sickLeaveEndDate,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        newOccupationalHealthcareEntry
+      );
+      const addEntry = response.data;
+
+      setPatient((prevPatient) => {
+        if (!prevPatient) return prevPatient;
+        return {
+          ...prevPatient,
+          entries: [...prevPatient.entries, addEntry],
+        };
+      });
+    } catch (error) {
+      console.log("Error adding new entry", error);
+    }
+    setIsOccupationalOpen(false);
   };
 
   const handleHospitalSubmit = async () => {
@@ -285,6 +324,81 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
     );
   }
 
+
+
+
+
+  if (isOccupationalOpen) {
+    return (
+      <div>
+        <h1>Occupational check details</h1>
+        <form onSubmit={handleOccupationalCheckSubmit}>
+          <div>
+            <label>date</label>
+            <input
+              type="text"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>description</label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>specialist</label>
+            <input
+              type="text"
+              value={specialist}
+              onChange={(e) => setSpecialist(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>diagnosisCodes</label>
+            <input
+              type="text"
+              value={diagnosisCodes.join(", ")}
+              onChange={(e) =>
+                setDiagnosisCodes((e.target.value as string).split(", "))
+              }
+            />
+          </div>
+          <div>
+          <label>employer name</label>
+          <input
+            type="text"
+            value={employerName}
+            onChange={(e) => setEmployerName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>sick leave start date</label>
+          <input
+            type="text"
+            value={sickLeaveStartDate}
+            onChange={(e) => setSickLeaveStartDate(e.target.value)}
+          /> 
+        </div>
+        <div>
+          <label>sick leave end date</label>
+          <input
+            type="text"
+            value={sickLeaveEndDate}
+            onChange={(e) => setSickLeaveEndDate(e.target.value)}
+          />
+        </div>
+          <button>submit</button>
+        </form>
+      </div>
+    );
+  }
+
+
+
   return (
     <div>
       <div>
@@ -293,7 +407,7 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
           Add Health check Entry{" "}
         </button>
         <button onClick={() => setIsHospitalOpen(true)} > Add Hospitalization Entry </button>
-        <button> Add occupational Health Check Entry </button>
+        <button onClick={() => setIsOccupationalOpen(true)} > Add occupational Health Check Entry </button>
       </div>
       {patient && (
         <div>

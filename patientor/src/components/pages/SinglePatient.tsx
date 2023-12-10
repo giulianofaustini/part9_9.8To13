@@ -97,6 +97,11 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
       healthCheckRating,
     };
     try {
+      if(healthCheckRating !== 0 && healthCheckRating !== 1 && healthCheckRating !== 2 && healthCheckRating !== 3  ) {
+        alert("Health check rating must be 0 (healthy), 1 (low-risk), 2(hight-risk), or 3(critical)");
+        return;
+      }
+
       const response = await axios.post(
         `${apiBaseUrl}/patients/${id}/entries`,
         newHealthCheckEntry

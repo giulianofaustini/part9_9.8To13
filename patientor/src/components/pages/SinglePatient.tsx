@@ -25,6 +25,8 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
   const { id } = useParams<{ id: string }>();
   const [diagnosis, setDiagnosis] = useState<Diagnosis[]>([]);
   const [patient, setPatient] = useState<Patient | undefined>();
+
+  //health check
   const [isHealthCheckOpen, setIsHealthCheckOpen] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -33,6 +35,14 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
   const [healthCheckRating, setHealthCheckRating] = useState<
     HealthCheckRating | undefined
   >(undefined);
+
+  // hospital
+
+  const [isHospitalOpen, setIsHospitalOpen] = useState<boolean>(false);
+  const [dischargeDate, setDischargeDate] = useState<string>("");
+  const [dischargeCriteria, setDischargeCriteria] = useState<string>("");
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,6 +95,38 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
       default:
         return null;
     }
+  };
+
+  const handleHospitalSubmit = async () => {
+    const newHospitalEntry = {
+      type: "Hospital",
+      description,
+      date,
+      specialist,
+      diagnosisCodes,
+      discharge: {
+        date: dischargeDate,
+        criteria: dischargeCriteria,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        newHospitalEntry
+      );
+      const addEntry = response.data;
+
+      setPatient((prevPatient) => {
+        if (!prevPatient) return prevPatient;
+        return {
+          ...prevPatient,
+          entries: [...prevPatient.entries, addEntry],
+        };
+      });
+    } catch (error) {
+      console.log("Error adding new entry", error);
+    }
+    setIsHospitalOpen(false);
   };
 
   const handleHealthCheckSubmit = async () => {
@@ -181,6 +223,68 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
     );
   }
 
+
+  if (isHospitalOpen) {
+    return (
+      <div>
+        <h1>Hospitalization details</h1>
+        <form onSubmit={handleHospitalSubmit}>
+          <div>
+            <label>date</label>
+            <input
+              type="text"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>description</label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>specialist</label>
+            <input
+              type="text"
+              value={specialist}
+              onChange={(e) => setSpecialist(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>diagnosisCodes</label>
+            <input
+              type="text"
+              value={diagnosisCodes.join(", ")}
+              onChange={(e) =>
+                setDiagnosisCodes((e.target.value as string).split(", "))
+              }
+            />
+          </div>
+          <div>
+          <label>discharge date</label>
+          <input
+            type="text"
+            value={dischargeDate}
+            onChange={(e) => setDischargeDate(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>discharge criteria</label>
+          <input
+            type="text"
+            value={dischargeCriteria}
+            onChange={(e) => setDischargeCriteria(e.target.value)}
+          />
+        </div>
+          <button>submit</button>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div>
@@ -188,7 +292,7 @@ export const SinglePatient: React.FC<Props> = ({ patients }: Props) => {
           {" "}
           Add Health check Entry{" "}
         </button>
-        <button> Add Hospitalization Entry </button>
+        <button onClick={() => setIsHospitalOpen(true)} > Add Hospitalization Entry </button>
         <button> Add occupational Health Check Entry </button>
       </div>
       {patient && (
